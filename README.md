@@ -1,0 +1,2 @@
+# eManazel-App
+Ionic App
