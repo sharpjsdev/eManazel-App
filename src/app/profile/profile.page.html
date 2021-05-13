@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-menu-button autoHide="false"></ion-menu-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Menu.profile_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding center">
+    <div class="card">
+      <div class="header">
+        <div class="avatar">
+          <img *ngIf="profile.image" src="{{appUrl}}{{profile.image}}" alt="">
+          <img *ngIf="!profile.image" src="assets/images/tab_1.png" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="card-body profile_card">
+      <div class="user-meta ion-text-center">
+        <h3 class="profile_username">{{profile.name}}</h3>
+      </div>
+    </div>
+    <div class='profile_info'>
+      <ion-row>
+        <ion-col size="3">
+          {{ 'Common.name_label' | translate:params}}  
+        </ion-col>
+        <ion-col size="1">
+          :  
+        </ion-col>
+        <ion-col size="8">
+          {{profile.name}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          {{ 'Common.mobile_label' | translate:params}}  
+        </ion-col>
+        <ion-col size="1">
+          :  
+        </ion-col>
+        <ion-col size="8">
+          {{profile.c_code}} {{profile.mobile}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3">
+          {{ 'Common.email_label' | translate:params}}   
+        </ion-col>
+        <ion-col size="1">
+          :  
+        </ion-col>
+        <ion-col size="8">
+          {{profile.email}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profile.city">
+        <ion-col size="3">
+          {{ 'Common.city_label' | translate:params}}  
+        </ion-col>
+        <ion-col size="1">
+          :  
+        </ion-col>
+        <ion-col size="8">
+          {{profile.city}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="profile.address">
+        <ion-col size="3">
+          {{ 'Common.address_label' | translate:params }}  
+        </ion-col>
+        <ion-col size="1">
+          :  
+        </ion-col>
+        <ion-col size="8">
+          {{profile.address}}
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,216 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.request_detail_head' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <!-- <img *ngIf="fileExtn==''" src="assets/images/no-image.png" class="thumbimg">
+    <img *ngIf="fileExtn!='' && (fileExtn=='jpg' || fileExtn=='png' || fileExtn=='jpeg' )" src="{{appUrl}}{{maintenance.image}}" class="thumbimg"> -->
+    <h4 class="request_detail_info_head center theme_color" *ngIf="language =='en'">{{request.item_en}}</h4>
+    <h4 class="request_detail_info_head center theme_color" *ngIf="language =='ar'">{{request.item_ar}}</h4>
+    
+    <div class="request_detail_info">
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.requested_by_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.user_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="request.main_id!=2">
+        <ion-col size="5">
+          {{'Common.price_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6" *ngFor="let order1 of order_request">
+          {{order1.price}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.date_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.on_date}}
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="5" >
+          {{'Common.morning_time_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.time_from}}
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="5" >
+          {{'Common.evening_time_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.time_to}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.status_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          <b class="status_pending_label" *ngIf="user_type!='2' && user_type!='-1' && user_type!='4' && request.status == 0">{{'Common.pending_label'  | translate:param}}</b>
+          <ion-button class="pending_btn" (click)="assignStaff(request.provider_id)" *ngIf="(user_type=='2' || user_type=='-1' || user_type=='4') && (request.status == 0)">{{'Common.pending_label'  | translate:param}}</ion-button>
+          <b class="status_accept_label" *ngIf="request.status == 1">{{'Common.accepted_label'  | translate:param}}</b>
+          <b class="status_reject_label" *ngIf="request.status == 2">{{'Common.rejected_label'  | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="user_type!='0'">
+        <ion-col size="5">
+          {{'Common.staff_name_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.staff_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'USERTYPE.service_provider'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{request.provider_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.staff_status_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          <b  class="status_pending_label" *ngIf="request.staff_status == 0 && user_type!='0'">{{'Common.pending_label'  | translate:param}}</b>
+          <ion-button (click)="changeStatus()" class="pending_btn" *ngIf="request.staff_status == 0 && user_type=='0'">{{'Common.pending_label'  | translate:param}}</ion-button>
+          <b class="status_accept_label" *ngIf="request.staff_status == 1">{{'Common.accepted_label'  | translate:param}}</b>
+          <b class="status_reject_label" *ngIf="request.staff_status == 2">{{'Common.rejected_label'  | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.task_status_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6" *ngIf="user_type!=2 &&  user_type!='-1'">
+          <b class="status_reject_label" *ngIf="request.task_status == 0">{{'Common.not_done_label'  | translate:param}}</b>
+          <b class="status_accept_label" *ngIf="request.task_status == 1">{{'Common.done_label'  | translate:param}}</b>
+        </ion-col>
+        <ion-col size="6" *ngIf="user_type==2 || user_type==-1">
+          <ion-button (click)="changeJobStatus()" class="reject_btn" *ngIf="request.task_status == 0  && request.job_start==1 && request.job_end == 1 && (user_type=='2' || user_type == '-1' ) ">{{'Common.not_done_label'  | translate:param}}</ion-button>
+          <b class="status_accept_label" *ngIf="request.task_status == 1">{{'Common.done_label'  | translate:param}}</b>
+          <b class="status_reject_label" *ngIf="request.task_status == 0   &&  request.job_end != 1 && (user_type==2 || user_type==-1)">{{'Common.not_done_label'  | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+      <span *ngIf="request.main_id==2"> 
+      <table id="area_table" class="margin-top-20" *ngFor="let order of order_request">
+        <tr >
+          <th>{{'Common.item_name_label' | translate:param}}</th>
+          <td>{{order.item_name}}</td>
+        </tr>
+        <tr>
+          <th>{{'Common.quantity_label' | translate:param}}</th>
+          <td>{{order.quantity}}</td>
+        </tr>
+        <tr>
+          <th>{{'Common.price_label' | translate:param}}</th>
+          <td>{{order.price}}</td>
+        </tr>
+        <tr>
+          <th>{{'Common.total_label' | translate:param}}</th>
+          <td >{{order.price * order.quantity}}</td>
+        </tr>
+      </table>
+    </span>
+      <ion-row *ngIf="user_type != '0'" class="margin-top-20">        
+        <ion-col size="12">
+          <div *ngIf="request.before_work_image!=null && before_work_image==''">
+            <p>Befor work start image</p>
+            <img src="{{appUrl}}{{request.before_work_image}}" >
+          </div>
+          
+        </ion-col>        
+        <ion-col size="12">
+          <div *ngIf="request.after_work_image!=null && after_work_image==''">
+            <p>After work done image</p>
+            <img src="{{appUrl}}{{request.after_work_image}}" >
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="request.staff_status=='1' && user_type == '0'" class="margin-top-20">
+        <ion-col size="12" *ngIf="before_work_image=='' && request.before_work_image==null">
+          
+       <label for="file" (click)="selectImage('before')" class="size_16"><ion-icon name="images"></ion-icon> Select before work start image</label>
+        </ion-col>
+        <ion-col size="12">
+          <div *ngIf="before_work_image!=''">
+            <p>Befor work start image</p>
+            <img src="{{appUrl}}{{before_work_image}}" >
+          </div>
+          <div *ngIf="request.before_work_image!=null && before_work_image==''">
+            <p>Befor work start image</p>
+            <img src="{{appUrl}}{{request.before_work_image}}" >
+          </div>
+          
+        </ion-col>
+        <ion-col size="12" *ngIf="after_work_image=='' && request.after_work_image==null && (request.before_work_image!=null || before_work_image!='' )">
+         
+       <label for="file" (click)="selectImage('after')" class="size_16"><ion-icon name="images"></ion-icon> Select after work done image</label>
+        </ion-col>
+        <ion-col size="12">
+          <div *ngIf="after_work_image!=''">
+            <p>After work done image</p>
+            <img src="{{appUrl}}{{after_work_image}}" >
+          </div>
+          <div *ngIf="request.after_work_image!=null && after_work_image==''">
+            <p>After work done image</p>
+            <img src="{{appUrl}}{{request.after_work_image}}" >
+          </div>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-button (click)="selectImage()">Select</ion-button> -->
+      </div>  
+  </div>
+</ion-content>

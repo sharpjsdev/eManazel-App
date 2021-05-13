@@ -1,0 +1,232 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Visitor.visitor_add_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <form name="form" (ngSubmit)="f.form.valid && visitorForm(f)" #f="ngForm" method="post">
+      <div class="mt10">
+        <div class="img_div">
+          <label for="file-input">
+          <img *ngIf="img1==''" src="assets/images/new_logo.png"  class="logo_img signature1"/> 
+          <img *ngIf="img1!=''" [src]="img1" class="logo_img signature1" />   
+          <ion-icon name="add-circle-outline" class="signature_plus" [class.ar_img_icon]="language=='ar'"></ion-icon>
+          </label>  
+          <input id="file-input"  type="file" (change)="onUploadChange($event)"/>    
+        </div>
+        <p class="center">{{'Common.upload_text_label' | translate:param}}</p>
+        </div>
+      <div class="">
+        <div *ngIf="user_type==4">
+          <ion-item>
+            <ion-label>{{'Common.select_label' | translate:param}} {{'Common.zone_label' | translate:param}}</ion-label>
+            <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="zone_id"  name="zone_id" #zones="ngModel" [ngClass]="{ 'is-invalid': f.submitted && zones.invalid }" required (ionChange)="getFlatFromZone($event)">
+              <ion-select-option *ngFor="let z of zone" value="{{z.id}}">{{z.group_name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+          <div *ngIf="f.submitted && zones.invalid" class="invalid-feedback">
+            <div *ngIf="zones.errors.required">{{'VALIDATION.zone_required' | translate:params}}</div>
+        </div>
+        </div>
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'Common.unit_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="unit"  name="unit" #units="ngModel" [ngClass]="{ 'is-invalid': f.submitted && units.invalid }" required (ionChange)="getMemeberFromFlat($event)">
+          <ion-select-option  value="{{f.id}}" *ngFor="let f of flats">{{f.number}} - {{f.group_name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && units.invalid" class="invalid-feedback">
+        <div *ngIf="units.errors.required">{{'VALIDATION.unit_required' | translate:params}}</div>
+      </div>
+      <div *ngIf="user_type==4">
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'USERTYPE.member' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="member_id" name="member_id"  #memb="ngModel" [ngClass]="{ 'is-invalid': f.submitted && memb.invalid }" required>>
+            <span *ngFor="let mem of members">
+              <ion-select-option   *ngIf="mem.is_approved == 1" value="{{mem.member_id}}">{{mem.name}}</ion-select-option>
+            </span>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && memb.invalid" class="invalid-feedback">
+          <div *ngIf="memb.errors.required">{{'VALIDATION.member_required' | translate:params}}</div>
+        </div>
+      </div>
+      <ion-item>
+        <ion-label>{{'Visitor.visitor_type_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" (ionChange)="selectLabour($event)" [(ngModel)]="v_type"  name="v_type" #v_types="ngModel" [ngClass]="{ 'is-invalid': f.submitted && v_types.invalid }" required>
+          <ion-select-option value="{{v.id}}" *ngFor="let v of visitor_type">{{v.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && v_types.invalid" class="invalid-feedback">
+        <div *ngIf="v_types.errors.required">{{'VALIDATION.visitor_type_required' | translate:params}}</div>
+      </div>
+      <ion-item style="display:none;" id="labour_div">
+        <ion-label>{{'Visitor.labor_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="type"  name="type">
+          <ion-select-option value="{{l_a.id}}" *ngFor="let l_a of labour_type_array">{{l_a.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">{{'Visitor.visitor_name_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="v_name"  name="v_name" #v_names="ngModel" [ngClass]="{ 'is-invalid': f.submitted && v_names.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && v_names.invalid" class="invalid-feedback">
+        <div *ngIf="v_names.errors.required">{{'VALIDATION.visitor_name_required' | translate:params}}</div>
+      </div>
+      <ion-row>
+        <ion-col size="3">
+          <ion-item class="mobile_std_div">
+            <ion-label style="display: none;">{{'Common.select_country_code_label' | translate:param}}</ion-label>
+            <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" class="custom_country_select" [(ngModel)]="std_code"  name="std_code" #std_codes="ngModel" [ngClass]="{ 'is-invalid': f.submitted && std_codes.invalid }"  required>
+              <ion-select-option *ngFor="let c of code" value="{{c.code}}">{{c.code}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && std_codes.invalid" class="invalid-feedback">
+            <div *ngIf="std_codes.errors.required">{{'VALIDATION.code_required' | translate:params}}</div>
+          </div>
+      </ion-col>
+      <ion-col size="9">
+        <ion-item>
+          <ion-label position="floating">{{'Common.mobile_label' | translate:param}}</ion-label>
+          <ion-input type="number"  [(ngModel)]="mobile"  name="mobile" #phone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"  required></ion-input>
+        </ion-item>
+        <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+          <div *ngIf="phone.errors.required">{{'VALIDATION.mobile_required' | translate:params}}</div>
+        </div>
+      </ion-col>
+      </ion-row>
+      
+      <ion-item>
+        <ion-label position="floating">{{'Visitor.visit_date_label' | translate:param}}</ion-label>
+        <ion-input [(ngModel)]="date"  name="date" #date_="ngModel" [ngClass]="{ 'is-invalid': f.submitted && date_.invalid }"  required (click)="showDate()"></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && date_.invalid" class="invalid-feedback">
+        <div *ngIf="date_.errors.required">{{'VALIDATION.date_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Visitor.visit_time_label' | translate:param}}</ion-label>
+        <ion-input  [(ngModel)]="time"  name="time" (click)="showTime()" #time_="ngModel" [ngClass]="{ 'is-invalid': f.submitted && time_.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && time_.invalid" class="invalid-feedback">
+        <div *ngIf="time_.errors.required">{{'VALIDATION.time_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Visitor.visit_days_label' | translate:param}}</ion-label>
+        <ion-input type="number" [(ngModel)]="visit_days"  name="visit_days" #visit_day="ngModel" [ngClass]="{ 'is-invalid': f.submitted && visit_day.invalid }"  required ></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && visit_day.invalid" class="invalid-feedback">
+        <div *ngIf="visit_day.errors.required">{{'VALIDATION.no_of_days_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.email_label' | translate:param}}</ion-label>
+        <ion-input type="text"  [(ngModel)]="email"  name="email" #email_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email_id.invalid }"  required ></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && email_id.invalid" class="invalid-feedback">
+        <div *ngIf="email_id.errors.required">{{'VALIDATION.email_required' | translate:params}}</div>
+      </div>
+      <p class="visitor_p_tag center">(English Capital Letters Only)</p>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">{{'Visitor.vehicle_no_label' | translate:param}}</ion-label>
+            <ion-input type="tel" pattern="[0-9]*" maxlength="4" minlength="4" (ngModel)="vehicle1N" name="vehicle1N" #veh_11="ngModel" [ngClass]="{ 'is-invalid': f.submitted && veh_11.invalid }" required></ion-input>
+          </ion-item>
+          <div *ngIf="f.submitted && veh_11.invalid" class="invalid-feedback">
+            <div *ngIf="veh_11.errors.required">{{'VALIDATION.vehicle_number_required' | translate:params}}</div>
+            <div *ngIf="veh_11.errors.pattern">{{'VALIDATION.valid_number_required' | translate:params}}</div>
+            <div *ngIf="veh_11.errors.minlength">{{'VALIDATION.min_length_required' | translate:params}}</div>
+          </div>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input  maxlength="1" pattern="[a-zA-Z ]*" (ngModel)="vehicle1L1" tabindex="1" #d (keyup)="moveFocus(e)"  name="vehicle1L1" autocapitalize="characters" ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" maxlength="1" pattern="[a-zA-Z ]*" (ngModel)="vehicle1L2" tabindex="2" #e (keyup)="moveFocus(o)"  name="vehicle1L2" autocapitalize="characters" ></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" maxlength="1" pattern="[a-zA-Z ]*" (ngModel)="vehicle1L3" tabindex="3" #o  name="vehicle1L3" autocapitalize="characters" ></ion-input>
+        </ion-item>
+      </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">{{'Visitor.vehicle_no_label' | translate:param}}</ion-label>
+            <ion-input type="tel" pattern="[0-9]*" maxlength="4" minlength="4" (ngModel)="vehicle2N" name="vehicle2N" ></ion-input>
+          </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle2L1" tabindex="1" (keyup)="moveFocus(b)" name="vehicle2L1" maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle2L2" tabindex="2" #b (keyup)="moveFocus(c)" name="vehicle2L2" maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle2L3" tabindex="3" #c  name="vehicle2L3" maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-item>
+            <ion-label position="floating">{{'Visitor.vehicle_no_label' | translate:param}}</ion-label>
+            <ion-input type="tel" pattern="[0-9]*" maxlength="4" minlength="4" (ngModel)="vehicle3N" name="vehicle3N" ></ion-input>
+          </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle3L1" name="vehicle3L1" tabindex="1" #g (keyup)="moveFocus(h)"  maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle3L2" name="vehicle3L2" tabindex="2" #h (keyup)="moveFocus(i)" maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      <ion-col size="2">
+        <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-input type="text" autocapitalize="characters" (ngModel)="vehicle3L3" name="vehicle3L3" tabindex="3" #i   maxlength="1" pattern="[a-zA-Z ]*"></ion-input>
+        </ion-item>
+      </ion-col>
+      </ion-row>
+      <ion-item>
+        <ion-label position="floating">{{'Common.other_info_label' | translate:param}}</ion-label>
+        <ion-textarea type="text" (ngModel)="info" name="info"></ion-textarea>
+      </ion-item>
+      <div>
+      </div>
+      <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.add_label' | translate:param}}</ion-button>
+    </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons> 
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Maintenance.maintenance_head' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="maintain-list-bg">
+  <app-menu-header></app-menu-header>  
+  <ion-item lines="none" class="tab margin-top-90" style="width: 100%;">
+    <ion-label>{{'Common.select_label' | translate:param}} {{'Common.status_label' | translate:param}}</ion-label>
+    <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="staff_dropdown" (ionChange)="searchByDropdown(staff_dropdown)">
+      <ion-select-option  value="">All</ion-select-option>
+      <ion-select-option  value="0">{{'Common.pending_label' | translate:param}}</ion-select-option>
+      <ion-select-option  value="1">{{'Common.accepted_label' | translate:param}}</ion-select-option>
+      <ion-select-option  value="2">{{'Common.rejected_label' | translate:param}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <div class="notice_add" [class.ar_toggle_add_btn]="language=='ar'" *ngIf="user_type==4 || user_type==5 || (user_type==6 && community_staff_type==6 )" routerLink="/maintenance-add"><img src="assets/images/plus.png"/></div>
+  
+  <div class="ion-padding margin-top-130"> 
+    <div  style="padding: 10px;" *ngIf="user_type==4 || user_type==5 || (user_type==6 && community_staff_type==6 )">
+      <google-chart *ngIf="graph_points!=''" [data]="pieChartData"></google-chart>  
+    </div>
+    <ion-card *ngFor="let maintain of maintenance" >
+      <ion-card-header routerLink="/maintenance-detail/{{maintain.request_id}}">
+        <ion-card-title class="meeting_heading" *ngIf="language == 'en'">{{maintain.service}}</ion-card-title>
+        <ion-card-title class="meeting_heading" *ngIf="language == 'ar'">{{maintain.service_ar}}</ion-card-title>
+        <!-- <ion-card-subtitle>Rent increase update meeting</ion-card-subtitle> -->
+        <ion-card-subtitle class="building_service_date">{{maintain.on_date}}</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        
+        <ion-row>
+          <ion-col size="5"> 
+            {{'Common.requested_by_label' | translate:param}}
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="6">
+            {{maintain.user_name}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5"> 
+            {{'Common.status_label' | translate:param}}
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="6">
+            <b class="status_pending_label" *ngIf="maintain.staff_status ==0">{{'Common.pending_label' | translate:param}}</b>
+            <b class="status_accept_label" *ngIf="maintain.staff_status ==1">{{'Common.accepted_label' | translate:param}}</b>
+            <b class="status_reject_label" *ngIf="maintain.staff_status ==2">{{'Common.rejected_label' | translate:param}}</b>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="user_type==5">
+          <ion-col size="5"> 
+            SOS
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="3" *ngIf="maintain.panic_id==''">
+            <ion-img (click)="sendSOS(maintain.request_id)" src="assets/images/sos.png" style="height: 30px;"></ion-img>
+          </ion-col>
+          <ion-col  size="6" *ngIf="maintain.panic_id!=''">
+            <ion-row>
+            <ion-col size="8"> 
+              <b style="color:green">{{'Common.requested_label' | translate:param}}</b>
+            </ion-col>
+            <ion-col size="4"> 
+              <ion-img (click)="sendSOS(maintain.request_id)" src="assets/images/sos_green.png" style="height: 30px;"></ion-img>
+            </ion-col>
+            
+          </ion-row>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="user_type==6 && community_staff_type!=6"> 
+          <ion-col *ngIf="maintain.staff_status==1 && maintain.job_start==0 && maintain.job_end==0">
+            <ion-button class="submit_btn_css" (click)="insertToken(maintain.request_id,'start_token')">{{'SIDE' | translate:param}}</ion-button>
+          </ion-col>
+          <ion-col *ngIf="maintain.staff_status==1 && maintain.job_start==1 && maintain.job_end==0">
+            <ion-button class="submit_btn_css" (click)="insertToken(maintain.request_id,'end_token')">{{'Common.end_label' | translate:param}}</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+    
+  </div>
+</ion-content>

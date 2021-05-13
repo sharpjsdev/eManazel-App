@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons> 
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.add_label' | translate:param}} {{'HOMEPAGE.violation_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <form name="form" (ngSubmit)="f.form.valid && save(f)" #f="ngForm" method="post" >
+      <div class="mt10">
+        <div class="img_div">
+          <label for="file-input">
+          <img  (click)="selectImage()" src="assets/images/new_logo.png"  class="logo_img signature1"/>  
+          <ion-icon (click)="selectImage()" name="add-circle-outline" class="signature_plus" [class.ar_img_icon]="language=='ar'"></ion-icon>
+          </label>  
+          <!-- <input id="file-input"  type="file" (change)="onUploadChange($event)"/>     -->
+        </div>
+        <p class="center">{{'Common.upload_text_label' | translate:param}}</p>
+        </div>
+      <div class="">
+        <div *ngIf="user_type!=5">
+          <ion-item>
+            <ion-label>{{'Common.select_label' | translate:param}} {{'Common.zone_label' | translate:param}}</ion-label>
+            <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="zone_id"  name="zone_id" #zones="ngModel" [ngClass]="{ 'is-invalid': f.submitted && zones.invalid }" required (ionChange)="getFlatFromZone($event)">
+              <ion-select-option *ngFor="let z of zone" value="{{z.id}}">{{z.group_name}}</ion-select-option>
+            </ion-select>
+        </ion-item>
+          <div *ngIf="f.submitted && zones.invalid" class="invalid-feedback">
+            <div *ngIf="zones.errors.required">{{'VALIDATION.zone_required' | translate:params}}</div>
+        </div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Common.unit_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="unit_id" name="unit_id"  #unittt="ngModel" [ngClass]="{ 'is-invalid': f.submitted && unittt.invalid }" (ionChange)="getMemeberFromFlat($event)" required>
+             <ion-select-option  *ngFor="let u of units" value="{{u.id}}">{{u.number}} - {{u.group_name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && unittt.invalid" class="invalid-feedback">
+          <div *ngIf="unittt.errors.required">{{'VALIDATION.unit_required' | translate:params}}</div>
+        </div>
+        <div *ngIf="user_type !=5">
+          <ion-item>
+            <ion-label>{{'Common.select_label' | translate:param}} {{'USERTYPE.member' | translate:param}}</ion-label>
+            <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="member_id" name="member_id" (ionChange)="getViolationComplaint($event)"  #memb="ngModel" [ngClass]="{ 'is-invalid': f.submitted && memb.invalid }" required>
+              <span *ngFor="let mem of members">
+                <ion-select-option   *ngIf="mem.is_approved == 1" value="{{mem.member_id}}">{{mem.name}}</ion-select-option>
+              </span>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && memb.invalid" class="invalid-feedback">
+            <div *ngIf="memb.errors.required">{{'VALIDATION.member_required' | translate:params}}</div>
+          </div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Violation.violator_category_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="category_id" name="category_id"  #cat_id="ngModel" (ionChange)="getViolationType($event)" [ngClass]="{ 'is-invalid': f.submitted && cat_id.invalid }" required>
+            <span *ngIf="language=='en'">
+              <ion-select-option  *ngFor="let c of category" value="{{c.id}}">{{c.desc_en}}</ion-select-option>
+            </span> 
+            <span *ngIf="language=='ar'">
+              <ion-select-option  *ngFor="let c of category" value="{{c.id}}">{{c.desc_ar}}</ion-select-option>
+            </span>
+             
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && cat_id.invalid" class="invalid-feedback">
+          <div *ngIf="cat_id.errors.required">{{'VALIDATION.category_required' | translate:params}}</div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Violation.violator_type_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="type_id" name="type_id"  #t_id="ngModel" (ionChange)="getViolationTypePrice($event)" [ngClass]="{ 'is-invalid': f.submitted && t_id.invalid }" required>
+            <span *ngIf="language=='en'">
+              <ion-select-option  *ngFor="let t of type" value="{{t.id}}">{{t.desc_en}}</ion-select-option>
+            </span> 
+            <span *ngIf="language=='ar'">
+              <ion-select-option  *ngFor="let t of type" value="{{t.id}}">{{t.desc_ar}}</ion-select-option>
+            </span> 
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && t_id.invalid" class="invalid-feedback">
+          <div *ngIf="t_id.errors.required">{{'VALIDATION.type_required' | translate:params}}</div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'HOMEPAGE.complaint_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="complaint_id" name="complaint_id" >
+             <ion-select-option  *ngFor="let cp of complaint" value="{{cp.id}}">{{cp.topic}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- <div *ngIf="f.submitted && com_id.invalid" class="invalid-feedback">
+          <div *ngIf="com_id.errors.required">{{'VALIDATION.complaint_topic_required' | translate:params}}</div>
+        </div> -->
+        <ion-item>
+          <ion-label position="floating">{{'Common.price_label' | translate:param}}</ion-label>
+          <ion-input type="text" readonly [(ngModel)]="price" name="price" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{'Common.waived_label' | translate:param}}</ion-label>
+          <ion-input type="text" readonly [(ngModel)]="wave" name="wave" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{'Common.location_label' | translate:param}}</ion-label>
+          <ion-textarea [(ngModel)]="address" name="address" required></ion-textarea>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">{{'Common.notes_label' | translate:param}}</ion-label>
+          <ion-textarea [(ngModel)]="notes" name="notes" required></ion-textarea>
+        </ion-item>
+        <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.add_label' | translate:param}}</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,182 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons> 
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.journal_details_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <ion-icon name="create-outline" *ngIf="journal_detail.type==0" class="common_icon" routerLink="/edit-journal/{{journal_id}}"></ion-icon>
+    <h4 class="request_detail_info_head center theme_color" *ngIf="language =='en' && journal_detail.type==0">{{journal_detail.ledger_type}}</h4>
+    <h4 class="request_detail_info_head center theme_color" *ngIf="language =='ar' && journal_detail.type==0">{{journal_detail.ledger_ar}}</h4>
+    <h4 class="request_detail_info_head center theme_color" *ngIf="journal_detail.type!=0">{{journal_detail.service}}</h4>
+    
+    <div class="request_detail_info">
+      <ion-row>
+        <ion-col size="5">
+          {{'Notice.created_on_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.created_on}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type!=0 ">
+        <ion-col size="5" >
+          {{'Common.unit_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.flat_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row >
+        <ion-col size="5"> 
+          {{'Bill.amt_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1"> 
+          :
+        </ion-col>
+        <ion-col  size="6">
+          {{journal_detail.amount }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5"> 
+          {{'Bill.paid_on_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1"> 
+          :
+        </ion-col>
+        <ion-col  size="6" >
+          {{journal_detail.paid_on }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Bill.amt_label' | translate:param}} {{'Common.type_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          <b *ngIf="journal_detail.amt_type==0">{{'Common.credit_label' | translate:param}}</b>
+          <b *ngIf="journal_detail.amt_type==1">{{'Common.debit_label' | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type!=0 && journal_detail.type!=5 ">
+        <ion-col size="5" >
+          {{'HOMEPAGE.user_label' | translate:param}} {{'Common.name_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.user_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0 || journal_detail.type==5 ">
+        <ion-col size="5" >
+          {{'Common.vendor_name_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.vendor_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0 || journal_detail.type==5 ">
+        <ion-col size="5" >
+          {{'Common.vendor_address_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.vendor_address}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0">
+        <ion-col size="5">
+          {{'Common.cheque_number_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.cheque_no}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0">
+        <ion-col size="5">
+          {{'Common.account_number_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.acc_no}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0">
+        <ion-col size="5">
+          {{'Common.receipt_number_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.receipt_num}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.payment_mode_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          <b *ngIf="journal_detail.mode==1">{{'Common.cash_label' | translate:param}}</b>
+          <b *ngIf="journal_detail.mode==2">{{'Common.cheque_label' | translate:param}}</b>
+          <b *ngIf="journal_detail.mode==3">{{'Common.neft_imps_label' | translate:param}}</b>
+          
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="journal_detail.type==0">
+        <ion-col size="5" >
+          {{'Common.description_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{journal_detail.ledger_description}}
+        </ion-col>
+      </ion-row>
+      </div>  
+      <div class="padding_10">    
+        <ion-row >
+          <ion-col size="6" *ngFor="let img of journal_images;">
+            <div  class="img-wraps event_thumb" ><ion-icon class="delete_closes" (click)="deleteAdsImage(img.id)" name="close-circle-outline"></ion-icon> <img src="{{appUrl}}{{img.file}}"/></div>   
+          </ion-col>
+        </ion-row> 
+      </div>
+  </div>
+</ion-content>

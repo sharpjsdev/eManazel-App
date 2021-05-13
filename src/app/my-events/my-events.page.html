@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Event.community_event_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="notice_add" routerLink="/event-add" [class.ar_toggle_add_btn]="language=='ar'"><img src="assets/images/plus.png"/></div>
+  
+  <div class="ion-padding margin-top-90">
+    
+    <ion-list>
+      <ion-list-header>
+        {{'Menu.my_event_label' | translate:param}}
+      </ion-list-header>
+  
+      <ion-item *ngFor="let ev of event" routerLink="/event-detail/{{ev.id}}" >
+        <ion-thumbnail slot="start" class="event_thumb">
+          <img *ngIf="ev.image==null || ev.image==''" src="assets/images/new_logo.png">
+          <img *ngIf="ev.image!=null" src="{{appUrl}}{{ev.image}}">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ev.title}}</h2>
+          <p>{{ev.created_on}}</p>
+        </ion-label>
+      </ion-item>
+      
+    </ion-list>
+  
+  </div>
+</ion-content>

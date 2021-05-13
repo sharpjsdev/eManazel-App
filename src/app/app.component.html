@@ -1,0 +1,75 @@
+<ion-app >
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" id="test"  type="overlay" *ngIf="openMenuFromRight=='start'" side="start">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <div class="menu_logo">
+            <img src="assets/images/new_logo.png">
+          </div>
+          <div *ngFor="let p of appPages; let i = index">
+          <ion-menu-toggle auto-hide="false" *ngIf="p.url!=''" >
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon [slot]="openMenuFromRight" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label [style]="text">{{ p.title | translate:param }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-item *ngIf="p.url==''" (click)="toggleLevel1('idx'+i)"  lines="none" text-wrap >
+            <ion-icon [slot]="openMenuFromRight" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+            <ion-label [style]="text">{{ p.title | translate:param }}</ion-label>
+            <!-- <ion-icon item-right name="caret-down-outline"></ion-icon> -->
+            <ion-icon  [slot]="toggleFromRight"  [name]="isLevel1Shown('idx'+i) ? 'caret-up-outline' : 'caret-down-outline'"></ion-icon>
+          </ion-item>
+          <ion-list *ngIf="isLevel1Shown('idx'+i)" [class]="submenu_list_test">
+            <ion-menu-toggle >
+            <ion-item menuclose  lines="none" *ngFor="let m of p.submenu1;let i2=index" text-wrap [routerLink]="[m.url]" routerDirection="root" routerLinkActive="selected">
+              <ion-icon [slot]="openMenuFromRight" [ios]="m.icon + '-outline'" [md]="m.icon + '-sharp'"></ion-icon>
+              <ion-label [style]="text">{{m.title | translate:param}}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          </ion-list>
+          </div>
+          <ion-item (click)="logout()" routerDirection="root"  lines="none" detail="false">
+            <ion-icon [slot]="openMenuFromRight" [ios]="icon + '-outline'" [md]="icon + '-sharp'"></ion-icon>
+            <ion-label [style]="text">{{'Menu.logout_label' | translate:param}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-menu contentId="main-content" id="test"  type="overlay" *ngIf="openMenuFromRight=='end'" side="start">
+      <ion-content>
+        <ion-list id="inbox-list">
+          <div class="menu_logo">
+            <img src="assets/images/new_logo.png">
+          </div>
+          <div *ngFor="let p of appPages; let i = index">
+          <ion-menu-toggle auto-hide="false" *ngIf="p.url!=''" >
+            <ion-item (click)="selectedIndex = i" routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <ion-icon [slot]="openMenuFromRight" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-label [style]="text">{{ p.title | translate:param }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          <ion-item *ngIf="p.url==''" (click)="toggleLevel1('idx'+i)"  lines="none" text-wrap >
+            <ion-icon [slot]="openMenuFromRight" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+            <ion-label [style]="text">{{ p.title | translate:param }}</ion-label>
+            <!-- <ion-icon item-right name="caret-down-outline"></ion-icon> -->
+            <ion-icon  [slot]="toggleFromRight"  [name]="isLevel1Shown('idx'+i) ? 'caret-up-outline' : 'caret-down-outline'"></ion-icon>
+          </ion-item>
+          <ion-list *ngIf="isLevel1Shown('idx'+i)" [class]="submenu_list_test">
+            <ion-menu-toggle >
+            <ion-item menuclose  lines="none" *ngFor="let m of p.submenu1;let i2=index" text-wrap [routerLink]="[m.url]" routerDirection="root" routerLinkActive="selected">
+              <ion-icon [slot]="openMenuFromRight" [ios]="m.icon + '-outline'" [md]="m.icon + '-sharp'"></ion-icon>
+              <ion-label [style]="text">{{m.title | translate:param}}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+          </ion-list>
+          </div>
+          <ion-item (click)="logout()" routerDirection="root"  lines="none" detail="false">
+            <ion-icon [slot]="openMenuFromRight" [ios]="icon + '-outline'" [md]="icon + '-sharp'"></ion-icon>
+            <ion-label [style]="text">{{'Menu.logout_label' | translate:param}}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

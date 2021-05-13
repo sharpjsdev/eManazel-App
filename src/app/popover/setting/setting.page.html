@@ -1,0 +1,17 @@
+
+<ion-content>
+  <ion-list>
+    <ion-item lines="none" (click)="wifiSetting()">
+      {{'Common.user_setting_label' | translate:param }}
+    </ion-item>
+    <ion-item  lines="none" (click)="eventFromPopover()">
+      {{'Common.switch_community_label' | translate:param }}
+    </ion-item>
+    <ion-item lines="none" (click)="joinCommunity()">
+      {{'Common.join_community_label' | translate:param }}
+    </ion-item>
+    <ion-item lines="none" (click)="leaveCommunity()">
+      {{'Common.leave_community_label' | translate:param }}
+    </ion-item>
+  </ion-list>
+</ion-content>

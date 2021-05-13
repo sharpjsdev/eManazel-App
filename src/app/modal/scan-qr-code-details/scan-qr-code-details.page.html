@@ -1,0 +1,131 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="semiBold size_16">{{'Visitor.visitor_detail_label' | translate:param}}</ion-title>
+    <ion-icon name="close-circle-outline" [class.ar_modal_icon]="language=='ar'" class="setting_icon" (click)="closeModal()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div >
+    <img *ngIf="visitor_details.image==''" src="assets/images/new_logo.png" class="thumbimg">
+    <img *ngIf="visitor_details.image!=''" src="{{appUrl}}{{visitor_details.image}}" class="thumbimg">
+  <h4 class="request_detail_info_head center theme_color">{{visitor_details.name}}</h4>
+  <div class="request_detail_info">
+    <ion-row>
+      <ion-col size="4">
+        {{'Common.in_out_label' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+       <b *ngIf="visitor_details.in_out_status=='0'">{{'Common.not_come_label' | translate:param}}</b>
+       <b *ngIf="visitor_details.in_out_status=='1'">{{'Common.come_label' | translate:param}}</b>
+       <b *ngIf="visitor_details.in_out_status=='2'">{{'Common.out_label' | translate:param}}</b>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Common.unit_no_head' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+       {{visitor_details.flat_number}} - {{visitor_details.group_name}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Common.email_label'  | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+       {{visitor_details.email}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Common.mobile_label'  | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        {{visitor_details.country_code}} {{visitor_details.mobile}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Visitor.vehicle_no_label' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        <p class="visit_detail_p" *ngFor="let veh of vehicle_array">{{veh}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Visitor.visit_date_label' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        {{ visitor_details.visit_date | date :  "dd-MM-yyyy" }}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Visitor.visit_time_label' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        {{visitor_details.visit_time}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Visitor.visit_days_label'  | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        {{visitor_details.days}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        {{'Common.status_label' | translate:param}}
+      </ion-col>
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="7">
+        <b class="status_accept_label" *ngIf="visitor_details.status=='1'">{{'Common.accepted_label'  | translate:param}}</b>
+        <b class="status_reject_label" *ngIf="visitor_details.status=='2'">{{'Common.rejected_label'  | translate:param}}</b>
+        <b class="status_pending_label" *ngIf="visitor_details.status=='0'">{{'Common.pending_label'  | translate:param}}</b>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="4">
+        <ion-button class="visitor_btn" (click)="inClick()" >{{'Common.in_label' | translate:param}}</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button class="visitor_btn" color="warning" (click)="outClick()">{{'Common.out_label' | translate:param}}</ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button class="visitor_btn" color="danger" (click)="rejectClick()">{{'Common.reject_label' | translate:param}}</ion-button>
+      </ion-col>
+    </ion-row>
+    </div>
+    
+</div>
+</ion-content>

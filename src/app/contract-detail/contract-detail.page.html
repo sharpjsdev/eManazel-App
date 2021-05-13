@@ -1,0 +1,171 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Contract.contract_details_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <h4 class="request_detail_info_head center theme_color">{{contracts.tenant_name}} ({{contracts.contract_year}})</h4>
+    
+    <div class="request_detail_info">
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.contract_number_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.contract_number}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.id_no_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.id_number}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.guest_name_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.guest_names}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.email_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.email}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.mobile_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.country_code}} {{contracts.mobile}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.unit_no_head' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.flat_number}} - {{contracts.group_name}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.total_amount_paid_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.total_amount_paid}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.total_person_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.total_persons}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.check_in_date_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.check_in_date}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.time_in_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.time_in}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.check_out_date_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.check_out_date}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Contract.time_out_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          {{contracts.time_out}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="5">
+          {{'Common.status_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="6">
+          <b class="status_pending_label" (click)="changeStatus()" *ngIf="contracts.status == 0 && user_type!=0">{{'Common.pending_label'  | translate:param}}</b>
+          <b class="status_pending_label"  *ngIf="contracts.status == 0 && user_type==0">{{'Common.pending_label'  | translate:param}}</b>
+          <b class="status_accept_label" *ngIf="contracts.status == 1">{{'Common.active_label'  | translate:param}}</b>
+          <b class="status_reject_label" *ngIf="contracts.status == 2">{{'Common.expired_label'  | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+   
+      </div>  
+  </div>
+</ion-content>

@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="semiBold size_16">{{'Visitor.visitor_detail_label' | translate:param}}</ion-title>
+    <ion-icon name="close-circle-outline" [class.ar_modal_icon]="language=='ar'" class="setting_icon" (click)="closeModal()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form name="form" (ngSubmit)="f.form.valid && visitorForm(f)" #f="ngForm" method="post">
+    <ion-item>
+      <ion-label position="floating">{{'Visitor.visit_date_label' | translate:param}}</ion-label>
+      <ion-input [(ngModel)]="date"  name="date" #date_="ngModel" [ngClass]="{ 'is-invalid': f.submitted && date_.invalid }"  required (click)="showDate()"></ion-input>
+    </ion-item>
+    <div *ngIf="f.submitted && date_.invalid" class="invalid-feedback">
+      <div *ngIf="date_.errors.required">{{'VALIDATION.date_required' | translate:params}}</div>
+    </div>
+    <ion-item>
+      <ion-label position="floating">{{'Visitor.visit_time_label' | translate:param}}</ion-label>
+      <ion-input  [(ngModel)]="time"  name="time" (click)="showTime()" #time_="ngModel" [ngClass]="{ 'is-invalid': f.submitted && time_.invalid }"  required></ion-input>
+    </ion-item>
+    <div *ngIf="f.submitted && time_.invalid" class="invalid-feedback">
+      <div *ngIf="time_.errors.required">{{'VALIDATION.time_required' | translate:params}}</div>
+    </div>
+    <div class="">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.re_issue_label' | translate:param}}</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button class="submit_btn_css mt30" type="button" (click)="closeModal()" >{{'Common.cancel_label' | translate:param}}</ion-button>
+        </ion-col>
+      </ion-row>
+    
+    
+  </div>
+  </form>
+</ion-content>

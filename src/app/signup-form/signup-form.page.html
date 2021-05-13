@@ -1,0 +1,105 @@
+<ion-content class="bg_grey">  
+  <div class="login_header">Signup</div>
+<div class="ion-padding">
+  <div class="form signup">
+    <div class="signup_role">
+      As a <span class="medium green">{{role}}</span>
+      <ion-icon name="create-outline" routerLink="/signup"></ion-icon>
+    </div>  
+    <form name="form" (ngSubmit)="f.form.valid && signup(f)" #f="ngForm" method="post" [mustMatch]="['password', 'c_password']">
+      <ion-item>
+        <ion-label position="floating">Full Name</ion-label>
+        <ion-input type="text" name="name" [(ngModel)]="name" #c_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && c_name.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && c_name.invalid" class="invalid-feedback">
+        <div *ngIf="c_name.errors.required">{{'VALIDATION.name_required' | translate:params}}</div>
+     </div>
+     <div *ngIf="role_check!=4 && role_check!=1">
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'USERTYPE.community' | translate:param}}</ion-label>
+          <ion-select placeholder="Select One" [(ngModel)]="community_id" name="community_id"  #com_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && com_id.invalid }" required>>
+            <ion-select-option   *ngFor="let c of communities" value="{{c.id}}">{{c.name}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && com_id.invalid" class="invalid-feedback">
+        <div *ngIf="com_id.errors.required">{{'VALIDATION.community_required' | translate:params}}</div>
+     </div>
+     </div>
+     <div *ngIf="role_check==2">
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'USERTYPE.service' | translate:param}}</ion-label>
+          <ion-select placeholder="Select One" [(ngModel)]="service_id" name="service_id"  #s_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && s_id.invalid }" required>>
+            <ion-select-option   *ngFor="let it of item_type" value="{{it.id}}">{{it.type}}</ion-select-option>
+          </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && s_id.invalid" class="invalid-feedback">
+        <div *ngIf="s_id.errors.required">{{'VALIDATION.service_required' | translate:params}}</div>
+     </div>
+     </div>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="email"  name="email" #emails="ngModel" [ngClass]="{ 'is-invalid': f.submitted && emails.invalid }" required email></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && emails.invalid" class="invalid-feedback">
+        <div *ngIf="emails.errors.required">{{'VALIDATION.email_required' | translate:params}}</div>
+        <div *ngIf="emails.errors.email">{{'VALIDATION.valid_email' | translate:params}}</div>
+      </div> 
+      <ion-row>
+        <ion-col size="3">
+          <ion-item class="">
+            <ion-label style="display: none;">{{'Common.select_country_code_label' | translate:param}}</ion-label>
+            <ion-select style="height: 54px;" class="custom_country_select" [(ngModel)]="std_code"  name="std_code" #std_codes="ngModel" [ngClass]="{ 'is-invalid': f.submitted && std_codes.invalid }"  required>
+              <ion-select-option *ngFor="let c of code" value="{{c.code}}">{{c.code}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && std_codes.invalid" class="invalid-feedback">
+            <div *ngIf="std_codes.errors.required">{{'VALIDATION.code_required' | translate:params}}</div>
+          </div>
+        </ion-col>
+        <ion-col size="9">
+          <ion-item>
+            <ion-label position="floating">Mobile No.</ion-label>
+            <ion-input type="number" [(ngModel)]="mobile"  name="mobile" #phone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }" required  ></ion-input>
+          </ion-item>
+          <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+            <div *ngIf="phone.errors.required">{{'VALIDATION.mobile_required' | translate:params}}</div>
+          </div> 
+        </ion-col>
+      </ion-row>
+      
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="text" [(ngModel)]="password"  name="password" #pass="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pass.invalid }" required minlength="8"></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && pass.invalid" class="invalid-feedback">
+        <div *ngIf="pass.errors.required">{{'VALIDATION.password_required' | translate:params}}</div>
+        <div *ngIf="pass.errors.minlength">{{'VALIDATION.password_length_required' | translate:param}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">Confirm Password</ion-label>
+        <ion-input type="text" [(ngModel)]="c_password"  name="c_password" #c_pass="ngModel" [ngClass]="{ 'is-invalid': f.submitted && c_pass.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && c_pass.invalid" class="invalid-feedback">
+        <div *ngIf="c_pass.errors.required">{{'VALIDATION.c_password_required' | translate:param}}</div>
+        <div *ngIf="c_pass.errors.mustMatch">{{'VALIDATION.match_password_required' | translate:param}}</div>
+      </div>
+      <ion-item lines="none" class="app_checkbox" style="--background: transparent;">
+        <ion-checkbox slot="start" [(ngModel)]="check_box"  name="check_box" #check="ngModel" [ngClass]="{ 'is-invalid': f.submitted && check.invalid }" required></ion-checkbox>
+        <ion-label>I agree to all the <span class="blue medium">Terms and Conditions</span></ion-label>
+      </ion-item>
+      <div *ngIf="f.submitted && check.invalid" class="invalid-feedback">
+        <div *ngIf="check.errors.required">{{'VALIDATION.common_required' | translate:param}}</div>
+      </div>
+      <div class="app_btn filled">
+        <ion-button class="app_btn" type="submit">Signup</ion-button>
+      </div> 
+    </form>
+    <div class="grey center" style="margin-top: 20px;">Already have an account ? <a routerLink="/login" class="medium">Login</a></div>  
+  </div>
+</div>
+</ion-content>
+
+<!-- <ion-footer class="footer_grey">
+  
+</ion-footer> -->
+

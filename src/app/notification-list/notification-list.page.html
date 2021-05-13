@@ -1,0 +1,30 @@
+<ion-header>   
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>    
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Menu.notification_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="ion-padding">    
+    <ion-card *ngFor="let noti of notifications" [class.un_read]="noti.is_read == 0" (click)="readNotification(noti.id,noti.is_read)">
+      <ion-card-header >
+        <ion-card-title class="meeting_heading">{{noti.title}}</ion-card-title>
+        <!-- <ion-card-subtitle>Rent increase update meeting</ion-card-subtitle> -->
+        <ion-card-subtitle class="building_service_date">{{noti.created_on}}</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+            {{noti.description}}
+      </ion-card-content>
+    </ion-card>
+    
+  </div>
+</ion-content>

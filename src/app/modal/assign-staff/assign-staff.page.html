@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="semiBold size_16">{{'Common.change_status_label' | translate:param}}</ion-title>
+    <ion-icon name="close-circle-outline" [class.ar_modal_icon]="language=='ar'" class="setting_icon" (click)="closeModal()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form name="form" (ngSubmit)="f.form.valid && statusForm(f)" #f="ngForm" method="post">    
+    <ion-item class="margin-top-20">
+      <ion-label>{{'Common.select_label' | translate:param}} {{'Common.status_label' | translate:param}}</ion-label>
+      <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="status" name="status" #st="ngModel" (ionChange)="getStaff($event)" [ngClass]="{ 'is-invalid': f.submitted && st.invalid }"  required>
+         <ion-select-option   value="1">{{'Common.accepted_label' | translate:param}}</ion-select-option>
+         <ion-select-option   value="2">{{'Common.rejected_label' | translate:param}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngIf="f.submitted && st.invalid" class="invalid-feedback">
+      <div *ngIf="st.errors.required">{{'VALIDATION.status_required' | translate:params}}</div>
+    </div>
+    <ion-item [style]="display">
+      <ion-label>{{'Common.select_label' | translate:param}} {{'Common.staff_label' | translate:param}}</ion-label>
+      <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="staff_id" name="staff_id" #stt="ngModel" [ngClass]="{ 'is-invalid': f.submitted && stt.invalid }"  required>
+         <ion-select-option *ngFor="let s of staffs"  value="{{s.id}}">{{s.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngIf="f.submitted && stt.invalid" class="invalid-feedback">
+      <div *ngIf="stt.errors.required">{{'VALIDATION.staff_required' | translate:params}}</div>
+    </div>
+    <div class="">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.submit_label' | translate:param}}</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button class="submit_btn_css mt30" type="button" (click)="closeModal()" >{{'Common.cancel_label' | translate:param}}</ion-button>
+        </ion-col>
+      </ion-row>
+    
+    
+  </div>
+  </form>
+</ion-content>

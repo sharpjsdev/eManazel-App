@@ -1,0 +1,86 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-menu-button autoHide="false"></ion-menu-button>  
+    </ion-buttons> 
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Menu.apply_community' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <form name="form" (ngSubmit)="f.form.valid && submitForm(f)" #f="ngForm" method="post">
+      <div class="">
+        <ion-item>
+          <ion-label position="floating">{{'Community.community_name_label' | translate:param}}</ion-label>
+          <ion-input type="text" [(ngModel)]="c_name"  name="c_name" #com_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && com_name.invalid }" required></ion-input>
+        </ion-item>
+        <div *ngIf="f.submitted && com_name.invalid" class="invalid-feedback">
+          <div *ngIf="com_name.errors.required">{{'VALIDATION.community_name_required' | translate:params}}</div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Common.city_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="c_id"  name="c_id" #cities="ngModel" [ngClass]="{ 'is-invalid': f.submitted && cities.invalid }" (ionChange)="selectCity($event)" required>
+            <ion-select-option  value="{{cit.id}}" *ngFor="let cit of city_list">{{cit.city}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && cities.invalid" class="invalid-feedback">
+          <div *ngIf="cities.errors.required">{{'VALIDATION.city_required' | translate:params}}</div>
+        </div>
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Common.district_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="d_id"  name="d_id" #dis_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && dis_id.invalid }" required>
+            <ion-select-option  value="{{d.id}}" *ngFor="let d of district_list">{{d.area}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && dis_id.invalid" class="invalid-feedback">
+          <div *ngIf="dis_id.errors.required">{{'VALIDATION.district_required' | translate:params}}</div>
+        </div>
+        <ion-item>
+          <ion-label position="floating">{{'Common.zipcode_label' | translate:param}}</ion-label>
+          <ion-input type="number" [(ngModel)]="zip_code"  name="zip_code" #zip="ngModel" [ngClass]="{ 'is-invalid': f.submitted && zip.invalid }" required></ion-input>
+        </ion-item>
+        <div *ngIf="f.submitted && zip.invalid" class="invalid-feedback">
+          <div *ngIf="zip.errors.required">{{'VALIDATION.zipcode_required' | translate:params}}</div>
+        </div>
+        <ion-row>
+          <ion-col size="8">
+            <ion-item>
+              <ion-label position="floating">{{'Common.area_label' | translate:param}}</ion-label>
+              <ion-input type="number"  [(ngModel)]="area"  name="area" #areas="ngModel" [ngClass]="{ 'is-invalid': f.submitted && areas.invalid }"  required></ion-input>
+            </ion-item>
+            <div *ngIf="f.submitted && areas.invalid" class="invalid-feedback">
+              <div *ngIf="areas.errors.required">{{'VALIDATION.area_required' | translate:params}}</div>
+            </div>
+          </ion-col>
+          <ion-col size="4">
+            <ion-item class="mobile_std_div">
+              <ion-label style="display: none;">{{'Common.select_label' | translate:param}}</ion-label>
+              <ion-select class="custom_country_select" [(ngModel)]="area_unit"  name="area_unit" #area_units="ngModel" [ngClass]="{ 'is-invalid': f.submitted && area_units.invalid }"  required>
+                <ion-select-option *ngFor="let au of area_unitss" value="{{au.id}}">{{au.unit}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <div *ngIf="f.submitted && area_units.invalid" class="invalid-feedback">
+              <div *ngIf="area_units.errors.required">{{'VALIDATION.common_required' | translate:params}}</div>
+            </div>
+        </ion-col>
+        </ion-row>
+        <ion-item>
+          <ion-label position="floating">{{'Common.address_label' | translate:param}}</ion-label>
+          <ion-textarea type="number" [(ngModel)]="address"  name="address" #add="ngModel" [ngClass]="{ 'is-invalid': f.submitted && add.invalid }" required></ion-textarea>
+        </ion-item>
+        <div *ngIf="f.submitted && add.invalid" class="invalid-feedback">
+          <div *ngIf="add.errors.required">{{'VALIDATION.address_required' | translate:params}}</div>
+        </div>
+        <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.add_label' | translate:param}}</ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

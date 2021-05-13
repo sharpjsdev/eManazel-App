@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.add_label' | translate:param}} {{'HOMEPAGE.contract_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form name="form" id="contractPasswordform" (ngSubmit)="f.form.valid && contractForm(f)" #f="ngForm" method="post">      
+      <div class="">
+        <ion-item>
+          <ion-label>{{'Common.select_label' | translate:param}} {{'Common.group_label' | translate:param}}</ion-label>
+          <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="group"  name="group" #groupss="ngModel" [ngClass]="{ 'is-invalid': f.submitted && groupss.invalid }" required>
+            <ion-select-option *ngFor="let g of groups" value="{{g.id}}">{{g.group_name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && groupss.invalid" class="invalid-feedback">
+          <div *ngIf="groupss.errors.required">{{'VALIDATION.group_required' | translate:params}}</div>
+        </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.total_person_label' | translate:param}}</ion-label>
+        <ion-input type="number" [(ngModel)]="total_person"  name="total_person" #total_mem="ngModel" [ngClass]="{ 'is-invalid': f.submitted && total_mem.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && total_mem.invalid" class="invalid-feedback">
+        <div *ngIf="total_mem.errors.required">{{'VALIDATION.total_person_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.total_amount_paid_label' | translate:param}}</ion-label>
+        <ion-input type="number" [(ngModel)]="paid_amount"  name="paid_amount" #p_amt="ngModel" [ngClass]="{ 'is-invalid': f.submitted && p_amt.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && p_amt.invalid" class="invalid-feedback">
+        <div *ngIf="p_amt.errors.required">{{'VALIDATION.total_amt_paid_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'Common.unit_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="unit"  name="unit" #units="ngModel" [ngClass]="{ 'is-invalid': f.submitted && units.invalid }" required>
+          <ion-select-option *ngFor="let f of flats" value="{{f.id}}">{{f.number}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && units.invalid" class="invalid-feedback">
+        <div *ngIf="units.errors.required">{{'VALIDATION.unit_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'Contract.unit_type_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="unit_type"  name="unit_type" #unit_types="ngModel" [ngClass]="{ 'is-invalid': f.submitted && unit_types.invalid }" required>
+          <span *ngIf="language == 'en'">
+            <ion-select-option *ngFor="let u_type of unitType" value="{{u_type.id}}">{{u_type.en}}</ion-select-option>
+          </span>
+          <span *ngIf="language == 'ar'">
+            <ion-select-option *ngFor="let u_type of unitType" value="{{u_type.id}}">{{u_type.ar}}</ion-select-option>
+          </span>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && unit_types.invalid" class="invalid-feedback">
+        <div *ngIf="unit_types.errors.required">{{'VALIDATION.unit_type_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.tenant_name_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="t_name"  name="t_name" #tenant="ngModel" [ngClass]="{ 'is-invalid': f.submitted && tenant.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && tenant.invalid" class="invalid-feedback">
+        <div *ngIf="tenant.errors.required">{{'VALIDATION.tenant_name_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.id_no_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="id_number"  name="id_number" #id_no="ngModel" [ngClass]="{ 'is-invalid': f.submitted && id_no.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && id_no.invalid" class="invalid-feedback">
+        <div *ngIf="id_no.errors.required">{{'VALIDATION.id_number_required' | translate:params}}</div>
+      </div>
+      <ion-row>
+        <ion-col size="3">
+          <ion-item style="margin-top: 7px;">
+            <ion-label >{{'Common.code_label' | translate:param}}</ion-label>
+            <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="country_code"  name="country_code" #codes="ngModel" [ngClass]="{ 'is-invalid': f.submitted && codes.invalid }" required>
+              <ion-select-option *ngFor="let c_code of countryCode" value="{{c_code.code}}">{{c_code.code}}</ion-select-option>
+              
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && codes.invalid" class="invalid-feedback">
+            <div *ngIf="codes.errors.required">{{'VALIDATION.code_required' | translate:params}}</div>
+          </div>
+        </ion-col>
+        <ion-col size="9">
+          <ion-item>
+            <ion-label position="floating">{{'Common.mobile_label' | translate:param}}</ion-label>
+            <ion-input type="text" [(ngModel)]="mobile"  name="mobile" #phone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }" required></ion-input>
+          </ion-item>
+          <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+            <div *ngIf="phone.errors.required">{{'VALIDATION.mobile_required' | translate:params}}</div>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-item>
+        <ion-label position="floating">{{'Common.email_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="email"  name="email" #email_id="ngModel" [ngClass]="{ 'is-invalid': f.submitted && email_id.invalid }" required email></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && email_id.invalid" class="invalid-feedback">
+        <div *ngIf="email_id.errors.required">{{'VALIDATION.email_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.guest_name_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="guest_name"  name="guest_name" #guest="ngModel" [ngClass]="{ 'is-invalid': f.submitted && guest.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && guest.invalid" class="invalid-feedback">
+        <div *ngIf="guest.errors.required">{{'VALIDATION.guest_name_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.check_in_date_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="check_in" (click)="checkInDate()"  name="check_in" #in_date="ngModel" [ngClass]="{ 'is-invalid': f.submitted && in_date.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && in_date.invalid" class="invalid-feedback">
+        <div *ngIf="in_date.errors.required">{{'VALIDATION.check_in_date_required' | translate:params}}</div>
+      </div>      
+      <ion-item>
+        <ion-label position="floating">{{'Contract.time_in_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="time_in" (click)="TimeIn()"  name="time_in" #in_time="ngModel" [ngClass]="{ 'is-invalid': f.submitted && in_time.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && in_time.invalid" class="invalid-feedback">
+        <div *ngIf="in_time.errors.required">{{'VALIDATION.time_in_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.check_out_date_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="check_out" (click)="checkOutDate()" name="check_out" #out_date="ngModel" [ngClass]="{ 'is-invalid': f.submitted && out_date.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && out_date.invalid" class="invalid-feedback">
+        <div *ngIf="out_date.errors.required">{{'VALIDATION.check_out_date_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Contract.time_out_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="time_out" (click)="TimeOut()"  name="time_out" #out_time="ngModel" [ngClass]="{ 'is-invalid': f.submitted && out_time.invalid }" required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && out_time.invalid" class="invalid-feedback">
+        <div *ngIf="out_time.errors.required">{{'VALIDATION.time_out_required' | translate:params}}</div>
+      </div>
+      <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.add_label' | translate:param}}</ion-button>
+    </div>
+    </form>
+  </div>
+</ion-content>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "812302987959",
+    "project_id": "emanazel-cb6e3",
+    "storage_bucket": "emanazel-cb6e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812302987959:android:de893080e7782061935332",
+        "android_client_info": {
+          "package_name": "com.eManazel.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812302987959-g5gvg8advqbcgc0stc673fmfv9706f01.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBB3HIV-3SPvafsxwv9cROCDHXB2tbmjUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812302987959-g5gvg8advqbcgc0stc673fmfv9706f01.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

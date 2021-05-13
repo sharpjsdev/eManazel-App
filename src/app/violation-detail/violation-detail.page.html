@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'HOMEPAGE.violation_detail_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+      <img *ngIf="violation.image=='' " src="assets/images/new_logo.png" class="thumbimg">
+      <img *ngIf="violation.image!='' && extension!='pdf'" src="{{appUrl}}{{violation.image}}" class="thumbimg">
+      <img *ngIf="violation.image!='' && extension=='pdf'" src="assets/images/new_logo.png" class="thumbimg">
+    <h4 class="request_detail_info_head center theme_color">{{violation.name}}</h4>
+    <div class="request_detail_info">
+      <ion-row>
+        <ion-col size="4">
+          {{'Violation.violator_unit_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+         {{violation.group_name}} - {{violation.number}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Violation.violator_category_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7" *ngIf="language == 'en'">
+         {{violation.category_en}} 
+        </ion-col>
+        <ion-col size="7" *ngIf="language == 'ar'">
+         {{violation.category_ar}}
+         </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Violation.violator_type_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7" *ngIf="language == 'en'">
+          {{violation.violation_en}} 
+         </ion-col>
+         <ion-col size="7" *ngIf="language == 'ar'">
+          {{violation.violation_ar}}
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Complaint.complaint_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+          {{violation.complaint_topic}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Bill.amt_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+          {{violation.amount}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Common.waived_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+          <b *ngIf="violation.waived=='0'">No</b>
+          <b *ngIf="violation.waived=='1'">Yes</b>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Common.location_label' | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+          {{violation.location}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          {{'Common.notes_label'  | translate:param}}
+        </ion-col>
+        <ion-col size="1">
+          :
+        </ion-col>
+        <ion-col size="7">
+          {{violation.notes}}
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="violation.image!='' && extension=='pdf'">
+        <ion-col size="5">
+          {{'Menu.document_label' | translate:param}}
+        </ion-col>
+        <ion-col size="7">
+          <b (click)="download(violation.image);">{{'Common.click_here_to_download' | translate:param}}</b>
+        </ion-col>
+      </ion-row>
+      </div>
+      
+  </div>
+</ion-content>

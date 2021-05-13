@@ -1,0 +1,10 @@
+{
+  "name": "justecard",
+  "integrations": {
+    "capacitor": {
+      "enabled": false
+    },
+    "cordova": {}
+  },
+  "type": "angular"
+}

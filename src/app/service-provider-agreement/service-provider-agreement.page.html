@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'HOMEPAGE.agreement_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <form name="form" (ngSubmit)="f.form.valid && agreementForm(f)" #f="ngForm" method="post">
+      <div class="mt10">
+        <div class="img_div">
+          <label for="file-input">
+            <img src="assets/images/new_logo.png"  class="logo_img signature1"/> 
+          <ion-icon name="add-circle-outline" class="signature_plus" [class.ar_img_icon]="language=='ar'"></ion-icon>
+          </label>  
+          <input id="file-input"  type="file" multiple/>    
+        </div>
+        <p class="center">{{'Common.upload_text_label' | translate:param}}</p>
+      </div>
+      <div class="">
+      
+      <ion-item>
+        <ion-label position="floating">{{'Common.commision_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="commision"  name="commision" #commission="ngModel" [ngClass]="{ 'is-invalid': f.submitted && commission.invalid }"  required ></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && commission.invalid" class="invalid-feedback">
+        <div *ngIf="commission.errors.required">{{'VALIDATION.title_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.response_time_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="response_time"  name="response_time" #res_time="ngModel" [ngClass]="{ 'is-invalid': f.submitted && res_time.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && res_time.invalid" class="invalid-feedback">
+        <div *ngIf="res_time.errors.required">{{'VALIDATION.description_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.resolution_time_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="resolution_time"  name="resolution_time" #resl_time="ngModel" [ngClass]="{ 'is-invalid': f.submitted && resl_time.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && resl_time.invalid" class="invalid-feedback">
+        <div *ngIf="resl_time.errors.required">{{'VALIDATION.price_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.memo_label' | translate:param}}</ion-label>
+        <ion-textarea type="text" [(ngModel)]="memo"  name="memo" #momos="ngModel" [ngClass]="{ 'is-invalid': f.submitted && momos.invalid }"  required></ion-textarea>
+      </ion-item>
+      <div *ngIf="f.submitted && momos.invalid" class="invalid-feedback">
+        <div *ngIf="momos.errors.required">{{'VALIDATION.memo_required' | translate:params}}</div>
+      </div>
+      <div>
+      </div>
+      <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.add_label' | translate:param}}</ion-button>
+    </div>
+    </form>
+  </div>
+</ion-content>

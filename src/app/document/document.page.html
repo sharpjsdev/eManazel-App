@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-menu-button autoHide="false"></ion-menu-button>  
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Menu.document_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content >
+  <app-menu-header></app-menu-header>
+  <div class="notice_add" [class.ar_toggle_add_btn]="language=='ar'" *ngIf="user_type==4" routerLink="/add-document"><img src="assets/images/plus.png"/></div>
+  <div class="ion-padding margin-top-90">
+  <ion-card *ngFor="let doc of document" >
+    <!-- <ion-card-header  routerLink="/edit-document/{{doc.id}}"> -->
+      <ion-card-header >
+      <ion-card-title class="meeting_heading">{{doc.title}}</ion-card-title>
+      <!-- <ion-card-subtitle>Rent increase update meeting</ion-card-subtitle> -->
+      <ion-card-subtitle class="building_service_date">{{doc.type}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{doc.description}}
+      <h3 class="semiBold" *ngIf="doc.file" (click)="download(doc.file)">{{'Common.download_label' | translate:param}} {{'Menu.document_label' | translate:param}} : <img *ngIf="doc.file.split('.').reverse()[0]=='jpg' || doc.file.split('.').reverse()[0]=='png'" src="assets/images/landscape.png"><img *ngIf="doc.file.split('.').reverse()[0]=='pdf'" src="assets/images/pdf.png"><img *ngIf="(doc.file.split('.').reverse()[0]=='doc') || (doc.file.split('.').reverse()[0]=='docx') ||  (doc.file.split('.').reverse()[0]=='txt')" src="assets/images/paperclip.png"></h3>
+    </ion-card-content>
+  </ion-card> 
+</div>
+</ion-content>

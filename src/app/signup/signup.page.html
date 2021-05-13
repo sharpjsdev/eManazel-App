@@ -1,0 +1,41 @@
+<ion-content class="bg_grey">  
+<div class="login_header">Signup</div>
+<div class="ion-padding">
+  <div class="signup">  
+    <div class="signup_title">Select any one role for create account:</div>
+    
+    <div class="role">
+      <ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="type">     
+        <div class="role_child" style="padding-right: 7.5px;">
+          <ion-segment-button value="2">
+            <ion-img src="assets/images/service.png"></ion-img>
+            <ion-label>{{'USERTYPE.service' | translate:params}} <br>{{'USERTYPE.provider' | translate:params}}</ion-label>
+          </ion-segment-button>      
+          <ion-segment-button value="5">
+            <ion-img src="assets/images/community.png"></ion-img>
+            <ion-label>{{'USERTYPE.community' | translate:params}} <br>{{'USERTYPE.member' | translate:params}}</ion-label>
+          </ion-segment-button>     
+        </div>  
+        <div class="role_child" style="padding-left: 7.5px;">
+          <ion-segment-button value="4">
+            <ion-img src="assets/images/group.png"></ion-img>
+            <ion-label>{{'USERTYPE.community' | translate:params}} <br></ion-label>
+          </ion-segment-button>     
+          <ion-segment-button value="1">
+            <ion-img src="assets/images/visitor.png"></ion-img>
+            <ion-label>{{'USERTYPE.guest' | translate:params}}<br></ion-label>
+          </ion-segment-button>  
+        </div>   
+      </ion-segment>
+    </div>
+
+    <div class="grey center" style="margin-top: 20px;">Already have an account ? <a routerLink="/login" class="medium blue">Login</a></div>  
+  </div>
+</div>
+</ion-content>
+
+<ion-footer class="footer_grey">
+  <div class="app_btn filled">
+    <ion-button class="app_btn" routerLink="/signup-form/{{type}}">{{'LOGIN.next' | translate:params}}</ion-button>
+  </div> 
+</ion-footer>

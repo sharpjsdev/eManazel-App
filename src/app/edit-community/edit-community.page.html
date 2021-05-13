@@ -1,0 +1,128 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.update_label' | translate:param}} {{'USERTYPE.community' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <form name="form" (ngSubmit)="f.form.valid && communityForm(f)" #f="ngForm" method="post">
+      <div class="mt10">
+        <div class="img_div">
+          <label for="file-input">
+            <img  src="assets/images/new_logo.png"  class="logo_img signature1"/> 
+            <ion-icon name="add-circle-outline" class="signature_plus" [class.ar_img_icon]="language=='ar'"></ion-icon>
+          </label>  
+          <input id="file-input"  type="file" (change)="onUploadChange($event)" multiple/>    
+        </div>
+        <p class="center">{{'Common.upload_text_label' | translate:param}}</p>
+      </div>
+      <div class="">
+      
+      <ion-item>
+        <ion-label position="floating">{{'USERTYPE.community' | translate:param}} {{'Common.name_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="community.name"  name="c_name" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }"  required ></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+        <div *ngIf="name.errors.required">{{'VALIDATION.name_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.short_label' | translate:param}} {{'Common.name_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="community.shortname"  name="short_name" #s_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && s_name.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && s_name.invalid" class="invalid-feedback">
+        <div *ngIf="s_name.errors.required">{{'VALIDATION.short_name_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'Common.city_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="community.city_id"  name="city" (ionChange)="selectDistrict($event)" #cities="ngModel" [ngClass]="{ 'is-invalid': f.submitted && cities.invalid }" required>
+          <ion-select-option  value="{{c.id}}" *ngFor="let c of city">{{c.city}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && cities.invalid" class="invalid-feedback">
+        <div *ngIf="cities.errors.required">{{'VALIDATION.city_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label>{{'Common.select_label' | translate:param}} {{'Common.district_label' | translate:param}}</ion-label>
+        <ion-select cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" placeholder="{{'PopUp.select_one' | translate:param}}" [(ngModel)]="community.area_id"  name="district" #district_name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && district_name.invalid }" required>
+          <ion-select-option  value="{{dis.id}}" *ngFor="let dis of dis_area">{{dis.area}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <div *ngIf="f.submitted && district_name.invalid" class="invalid-feedback">
+        <div *ngIf="district_name.errors.required">{{'VALIDATION.district_required' | translate:params}}</div>
+      </div>
+      <ion-item>
+        <ion-label position="floating">{{'Common.zipcode_label' | translate:param}} </ion-label>
+        <ion-input type="text" [(ngModel)]="community.pincode"  name="zip_code" #zip="ngModel" [ngClass]="{ 'is-invalid': f.submitted && zip.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && zip.invalid" class="invalid-feedback">
+        <div *ngIf="zip.errors.required">{{'VALIDATION.zipcode_required' | translate:params}}</div>
+      </div>
+      <ion-row>
+      <ion-col size="9">
+        <ion-item>
+          <ion-label position="floating">{{'Common.area_label' | translate:param}}</ion-label>
+          <ion-input type="text" [(ngModel)]="community.total_area"  name="area" #ar="ngModel" [ngClass]="{ 'is-invalid': f.submitted && ar.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && ar.invalid" class="invalid-feedback">
+        <div *ngIf="ar.errors.required">{{'VALIDATION.area_required' | translate:params}}</div>
+      </div>
+      </ion-col>
+      <ion-col size="3">
+        <ion-item class="mobile_std_div">
+          <ion-label style="display: none;">{{'Common.select_label' | translate:param}} {{'Common.unit_label' | translate:param}}</ion-label>
+          <ion-select class="custom_country_select" cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}"  [(ngModel)]="community.area_unit_id"  name="area_unit" #a_unit="ngModel" [ngClass]="{ 'is-invalid': f.submitted && a_unit.invalid }"  required>
+            <ion-select-option *ngFor="let a of area_units" value="{{a.id}}">{{a.unit}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div *ngIf="f.submitted && a_unit.invalid" class="invalid-feedback">
+          <div *ngIf="a_unit.errors.required">{{'VALIDATION.unit_required' | translate:params}}</div>
+        </div>
+    </ion-col>
+      </ion-row>
+
+      <ion-item>
+        <ion-label position="floating">{{'Common.address_label' | translate:param}}</ion-label>
+        <ion-input type="text" [(ngModel)]="community.location"  name="address"  #add="ngModel" [ngClass]="{ 'is-invalid': f.submitted && add.invalid }"  required></ion-input>
+      </ion-item>
+      <div *ngIf="f.submitted && add.invalid" class="invalid-feedback">
+        <div *ngIf="add.errors.required">{{'VALIDATION.address_required' | translate:params}}</div>
+      </div>
+      <ion-row>
+        <ion-col size="3">
+          <ion-item class="mobile_std_div">
+            <ion-label style="display: none;">{{'Common.select_country_code_label' | translate:param}}</ion-label>
+            <ion-select class="custom_country_select" cancelText="{{'Common.cancel_label' | translate:param}}" okText="{{'Common.ok_label' | translate:param}}" [(ngModel)]="community.community_country_code"  name="std_code" #std_codes="ngModel" [ngClass]="{ 'is-invalid': f.submitted && std_codes.invalid }"  required>
+              <ion-select-option *ngFor="let c of code" value="{{c.code}}">{{c.code}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <div *ngIf="f.submitted && std_codes.invalid" class="invalid-feedback">
+            <div *ngIf="std_codes.errors.required">{{'VALIDATION.code_required' | translate:params}}</div>
+          </div>
+      </ion-col>
+      <ion-col size="9">
+        <ion-item>
+          <ion-label position="floating">{{'Common.mobile_label' | translate:param}}</ion-label>
+          <ion-input type="number"  [(ngModel)]="community.contact"  name="mobile" #phone="ngModel" [ngClass]="{ 'is-invalid': f.submitted && phone.invalid }"  required></ion-input>
+        </ion-item>
+        <div *ngIf="f.submitted && phone.invalid" class="invalid-feedback">
+          <div *ngIf="phone.errors.required">{{'VALIDATION.mobile_required' | translate:params}}</div>
+        </div>
+      </ion-col>
+      </ion-row>
+      <div>
+      </div>
+      <ion-button class="submit_btn_css mt30" type="submit"  >{{'Common.update_label' | translate:param}}</ion-button>
+    </div>
+    </form>
+  </div>
+</ion-content>

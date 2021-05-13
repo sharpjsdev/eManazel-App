@@ -1,0 +1,45 @@
+<ion-content class="bg_grey">  
+  <div class="login_header">{{ 'LOGIN.login_title' | translate:params }}</div>
+<div class="ion-padding">
+  <div class="form login">  
+    <div class="signup_role">
+      {{ 'LOGIN.as_a' | translate:params }} <span class="medium green">{{role}}</span>
+      <ion-icon name="create-outline" routerLink="/login"></ion-icon>
+    </div> 
+    <form name="form" (ngSubmit)="f.form.valid && login(f)" #f="ngForm" method="post">
+    <ion-item>
+      <ion-label position="floating">{{ 'Common.email_label' | translate:params }}</ion-label>
+      <ion-input type="email" [(ngModel)]="email"  name="email" #name="ngModel" [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required email></ion-input>
+    </ion-item> 
+    <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+      <div *ngIf="name.errors.required">{{'VALIDATION.email_required' | translate:params}}</div>
+    <div *ngIf="name.errors.email">{{'VALIDATION.valid_email' | translate:params}}</div>
+  </div> 
+    <ion-item>
+      <ion-label position="floating">{{ 'Common.password_label' | translate:params }}</ion-label>
+      <ion-input type="{{type}}" name="password" [(ngModel)]="password" #pass="ngModel" [ngClass]="{ 'is-invalid': f.submitted && pass.invalid }" required></ion-input>
+    </ion-item>  
+    <button *ngIf="!showPass" ion-button clear class="eye_btn" color="dark" type="button" item-right (click)="showPassword()"> 
+			<ion-icon name="eye" class="eye_icon" ></ion-icon>
+		</button>
+	   <button *ngIf="showPass" ion-button clear color="dark" type="button" class="eye_btn" item-right (click)="showPassword()"> 
+		  <ion-icon name="eye-off" class="eye_icon"></ion-icon>
+	   </button>
+    <div *ngIf="f.submitted && pass.invalid" class="invalid-feedback">
+      <div *ngIf="pass.errors.required">{{'VALIDATION.password_required' | translate:params}}</div>
+  </div>
+    <div class="forgot_password"  (click)="forgotPassword()" >{{'LOGIN.forget_password_question' | translate:params }}</div> 
+    <div class="app_btn filled">
+      <ion-button class="app_btn" type="submit">{{'LOGIN.login_title' | translate:params }}</ion-button>
+    </div> 
+   </form>
+    <div class="grey center" style="margin-top: 20px;">{{'LOGIN.dont_account' | translate:params }} <a routerLink="/signup" class="medium">{{'LOGIN.create' | translate:params }}</a></div>  
+  </div>
+</div>
+</ion-content>
+
+<!-- <ion-footer class="footer_grey">
+  <div class="app_btn filled">
+    <ion-button class="app_btn" routerLink="/dashboard">Login</ion-button>
+  </div> 
+</ion-footer> -->

@@ -1,0 +1,142 @@
+<div class="tab" *ngIf="user_type!=6">
+  <div [class]="classVariable" routerLink="/dashboard" *ngIf="user_type!=4">
+    <ion-img src="assets/images/tab_1.png"></ion-img>
+    <div class="tab_title">{{'Common.dashboard_label' | translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/community-dashboard" *ngIf="user_type==4">
+    <ion-img src="assets/images/tab_1.png"></ion-img>
+    <div class="tab_title">{{'Common.dashboard_label' | translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/external-request-list"  *ngIf="service_type_id!=17">
+    <ion-img src="assets/images/tab_2.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.external_request_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/admin-contract" *ngIf="user_type==4">
+    <ion-img src="assets/images/contract.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.contract_label' | translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/item-list" *ngIf="user_type==2 && service_type_id!=17">
+    <ion-img src="assets/images/item.png"></ion-img>
+    <div class="tab_title">{{'Menu.item_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/agreemets" *ngIf="user_type==2">
+    <ion-img src="assets/images/contract.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.agreement_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/service-provider-user" *ngIf="user_type==2">
+    <ion-img src="assets/images/users.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.user_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/contracts" *ngIf="(user_type==2 && service_type_id==17) || (user_type==-1 && service_type_id==17) || (user_type==0 && service_type_id==17)">
+    <ion-img src="assets/images/agreement.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.contract_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" (click)="sendSOS()" *ngIf="user_type==5">
+    <ion-img src="assets/images/sos.png"></ion-img>
+    <div class="tab_title" >{{'HOMEPAGE.sos_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/maintenance-list" [style]="hide">
+    <ion-img src="assets/images/tab_2.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.maintenance_label'| translate:param}}</div>
+  </div>
+  <!-- <div class="tab_child">
+    <ion-img src="assets/images/tab_3.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.settings_label'| translate:param}}</div>
+  </div> -->
+  <div [class]="classVariable" routerLink="/complaint" [style]="hide">
+    <ion-img src="assets/images/tab_4.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.complaint_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/ads" [style]="hide">
+    <ion-img src="assets/images/ads.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.ads_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/phone-book" [style]="hide">
+    <ion-img src="assets/images/phone-book.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.phone_book_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/visitor-list" [style]="hide">
+    <ion-img src="assets/images/visitor.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.visitor_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/violation-list" [style]="hide">
+    <ion-img src="assets/images/violation.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.violation_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/bills" *ngIf="user_type==5">
+    <ion-img src="assets/images/bills.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.bills_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/account" *ngIf="user_type==4">
+    <ion-img src="assets/images/payment-method.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.payment_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/panic-alerts" *ngIf="user_type==4">
+    <ion-img src="assets/images/alert.png"></ion-img>
+    <div class="tab_title">{{'Common.panic_alerts_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/event-list" [style]="hide">
+    <ion-img src="assets/images/events.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.events_label'| translate:param}}</div>
+  </div>
+</div> 
+<div class="tab" *ngIf="user_type==6">
+  <div [class]="classVariable" routerLink="/dashboard">
+    <ion-img src="assets/images/tab_1.png" ></ion-img>
+    <div class="tab_title">Dashboard</div>
+  </div>
+  <div [class]="classVariable" routerLink="/maintenance-list" *ngIf="community_staff_type==0 || community_staff_type==2 || community_staff_type==6">
+    <ion-img src="assets/images/tab_2.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.maintenance_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/sos-list" *ngIf="community_staff_type==0 || community_staff_type==2">
+    <ion-img src="assets/images/sos.png"></ion-img>
+    <div class="tab_title">SOS</div>
+  </div>
+  <div [class]="classVariable" routerLink="/staffs" *ngIf="community_staff_type==6">
+    <ion-img src="assets/images/staff.png"></ion-img>
+    <div class="tab_title">{{'Common.staff_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/panic-alerts" *ngIf="community_staff_type==6">
+    <ion-img src="assets/images/alert.png"></ion-img>
+    <div class="tab_title">{{'Common.panic_alerts_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/visitor-list" *ngIf="community_staff_type==1">
+    <ion-img src="assets/images/visitor.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.visitor_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/security-sos" *ngIf="community_staff_type==1">
+    <ion-img src="assets/images/sos.png"></ion-img>
+    <div class="tab_title">SOS</div>
+  </div>
+  <div [class]="classVariable" routerLink="/complaint" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/tab_4.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.complaint_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/ads" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/ads.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.ads_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/violation-list" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/violation.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.violation_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/event-list" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/events.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.events_label'| translate:param}}</div>
+  </div>
+</div>
+<div class="tab" *ngIf="user_type==1">
+  <div [class]="classVariable" routerLink="/dashboard">
+    <ion-img src="assets/images/tab_1.png" ></ion-img>
+    <div class="tab_title">{{'Common.dashboard_label' | translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/ads" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/ads.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.ads_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/event-list" *ngIf="community_staff_type!=6">
+    <ion-img src="assets/images/events.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.events_label'| translate:param}}</div>
+  </div>
+</div>

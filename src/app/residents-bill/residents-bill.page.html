@@ -1,0 +1,106 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-menu-button autoHide="false"></ion-menu-button>  
+    </ion-buttons> 
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.residents_bill_label' | translate:param}}</ion-title>
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-menu-header></app-menu-header>
+  <div class="ion-padding margin-top-90">
+    <ion-row>
+      <ion-col size="6">
+        <b>{{'Common.total_label' | translate:param}} {{'Bill.amt_label' | translate:param}}</b> 
+      </ion-col >
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="5">
+        {{residents_bill_amt.total_amount}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <b>{{'Bill.paid_amt_lable' | translate:param}}</b> 
+      </ion-col >
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="5">
+        {{residents_bill_amt.total_paid_amount}}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="6">
+        <b>{{'Common.remain_label' | translate:param}} {{'Bill.amt_label' | translate:param}}</b> 
+      </ion-col >
+      <ion-col size="1">
+        :
+      </ion-col>
+      <ion-col size="5">
+        {{residents_bill_amt.total_remain_amount}}
+      </ion-col>
+    </ion-row>
+    <ion-card *ngFor="let sr of residents_bill">
+      <ion-card-header>
+        <ion-card-title class="meeting_heading">{{sr.name}}</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        
+        <ion-row>
+          <ion-col size="5"> 
+            {{'Common.unit_label' | translate:param}}
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="6">
+            {{sr.number}} {{sr.group_name}}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5"> 
+            {{'Bill.paid_amt_lable' | translate:param}}
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="6">
+            <p *ngIf="sr.paid_amount==null">0.00</p>
+            <p *ngIf="sr.paid_amount!=null">{{sr.paid_amount}}</p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5"> 
+            {{'Bill.amt_label' | translate:param}}
+          </ion-col>
+          <ion-col size="1"> 
+            :
+          </ion-col>
+          <ion-col  size="6">
+            {{sr.amount}} 
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+      <ion-row>
+        <ion-col size="6"> 
+          <ion-button routerLink="/payment-details/{{sr.bill_id}}" class="visitor_btn">{{'HOMEPAGE.payment_label' | translate:param}}</ion-button>
+        </ion-col>
+        <ion-col  size="6">
+          <!-- <ion-button (click)="generateInvoice(sr.invoice_id,sr.bill_id)" class="visitor_btn">{{'Common.invoice_label' | translate:param}}</ion-button> -->
+          <ion-button (click)="generateInvoice(sr.invoice_id,sr.bill_id)" class="visitor_btn">{{'Common.invoice_label' | translate:param}}</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+  </div>
+</ion-content>
+

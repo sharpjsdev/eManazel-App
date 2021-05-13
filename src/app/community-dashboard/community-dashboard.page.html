@@ -1,0 +1,156 @@
+<ion-header>   
+  <ion-toolbar>
+    <ion-buttons slot="start"  [class.ar_toggle]="language=='ar'">
+      <ion-menu-button autoHide="false"></ion-menu-button>  
+    </ion-buttons>    
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'Common.dashboard_label' | translate:param}}</ion-title>   
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons>  
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="bg_grey">
+<div class="tab" *ngIf="user_type!=6">
+  <div [class]="classVariable">
+    <ion-img src="assets/images/tab_1.png" ></ion-img>
+    <div class="tab_title">{{'Common.dashboard_label' | translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/external-request-list">
+    <ion-img src="assets/images/tab_2.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.external_request_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/admin-contract">
+    <ion-img src="assets/images/contract.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.contract_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/maintenance-list">
+    <ion-img src="assets/images/tab_2.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.maintenance_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/complaint">
+    <ion-img src="assets/images/tab_4.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.complaint_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/ads">
+    <ion-img src="assets/images/ads.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.ads_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/phone-book">
+    <ion-img src="assets/images/phone-book.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.phone_book_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/visitor-list">
+    <ion-img src="assets/images/visitor.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.visitor_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/violation-list">
+    <ion-img src="assets/images/violation.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.violation_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/account">
+    <ion-img src="assets/images/payment-method.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.payment_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/panic-alerts">
+    <ion-img src="assets/images/alert.png"></ion-img>
+    <div class="tab_title">{{'Common.panic_alerts_label'| translate:param}}</div>
+  </div>
+  <div [class]="classVariable" routerLink="/event-list" [style]="hide">
+    <ion-img src="assets/images/events.png"></ion-img>
+    <div class="tab_title">{{'HOMEPAGE.events_label'| translate:param}}</div>
+  </div>
+</div> 
+<div class="ion-padding"> 
+  <ion-row class="margin-top-90">
+    <ion-col size="12">      
+      <span class="welcome_msg">{{'Common.welcome_label' | translate:param}}, </span><span class="semiBold green">{{user_name}}</span> 
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="6" >
+      <div class="custome_count_label">
+        <!-- <span class="semiBold green" *ngIf="(user_type=='5' || user_type=='2' || user_type=='-1') || (user_type=='0' && service_type_id==17) ">{{"HOMEPAGE.financial_stats_label" | translate:param}}</span> -->
+        <span class="semiBold green">{{"USERTYPE.service_provider" | translate:param}}</span>
+      </div>
+    </ion-col>
+  </ion-row>
+</div>  
+   
+<div class="ion-padding">
+  <div class="dashboard">
+    <div class="counter">
+      <div class="counter_inner" >
+        <ion-row>
+          <ion-col size="6">
+            <div class="counter_single">
+              <div class="single_inner">
+                <div class="counter_icon"><ion-icon name="logo-usd"></ion-icon></div>
+                <div class="counter_detail">
+                  <div class="counter_number">{{collection.service_provider_credit}}</div>
+                  <div class="counter_title">{{'Common.collected_label' | translate:param}}</div>              
+                </div>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="counter_single">
+              <div class="single_inner">
+                <div class="counter_icon"><ion-icon name="logo-usd"></ion-icon></div>
+                <div class="counter_detail">
+                  <div class="counter_number">{{collection.service_provider_debit}}</div>
+                  <div class="counter_title">{{'Common.pending_label' | translate:param}}</div>              
+                </div>
+              </div>
+            </div>
+          </ion-col>         
+        </ion-row> 
+        <ion-row>
+          <ion-col size="12" class="MB-40" >
+            <div class="custome_count_label">
+              <!-- <span class="semiBold green" *ngIf="(user_type=='5' || user_type=='2' || user_type=='-1') || (user_type=='0' && service_type_id==17) ">{{"HOMEPAGE.financial_stats_label" | translate:param}}</span> -->
+              <span class="semiBold green">{{"HOMEPAGE.maintenance_label" | translate:param}}</span>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="counter_single">
+              <div class="single_inner">
+                <div class="counter_icon"><ion-icon name="logo-usd"></ion-icon></div>
+                <div class="counter_detail">
+                  <div class="counter_number">{{collection.maintenance_credit}}</div>
+                  <div class="counter_title">{{'Common.collected_label' | translate:param}}</div>              
+                </div>
+              </div>
+            </div>
+          </ion-col>
+          <ion-col size="6">
+            <div class="counter_single">
+              <div class="single_inner">
+                <div class="counter_icon"><ion-icon name="logo-usd"></ion-icon></div>
+                <div class="counter_detail">
+                  <div class="counter_number">{{collection.maintenance_debit}}</div>
+                  <div class="counter_title">{{'Common.pending_label' | translate:param}}</div>              
+                </div>
+              </div>
+            </div>
+          </ion-col>    
+        </ion-row>    
+      </div>     
+    </div>
+    <div class="graph" >
+      <div class="graph_one">
+        <div class="graph_inner">
+          <div class="green" style="margin-bottom: 12px;">{{'Common.overall_performance' | translate:param}}</div>
+          <h4 class="work-status-graph-label">{{'Common.maintenance_graph' | translate:param}}</h4>
+           <google-chart *ngIf="graph_points!='' " [data]="pieChartData"></google-chart> 
+           <h4 class="work-status-graph-label">{{'HOMEPAGE.external_request_label' | translate:param}}</h4>
+           <google-chart *ngIf="external_graph_points!='' " [data]="pieChartData2"></google-chart> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</ion-content>

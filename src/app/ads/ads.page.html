@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start" [class.ar_toggle]="language=='ar'">
+      <ion-back-button autoHide="false"></ion-back-button>  
+    </ion-buttons>    
+    <ion-title class="semiBold size_16" [class.ar_toggle_title]="language=='ar'">{{'HOMEPAGE.ads_label' | translate:param}}</ion-title> 
+    <ion-icon *ngIf="user_type=='4' || user_type=='5'" name="settings-outline" class="setting_icon" (click)="settingsPopover()"></ion-icon>
+    <ion-icon routerLink="/notification-list" name="notifications-outline" class="setting_icon notification_bell"></ion-icon><ion-badge class="badge_class">{{notification_count}}</ion-badge>
+    <ion-buttons slot="end" class="lang_butn">      
+      <div class="language"  *ngIf="language=='en'" (click) = "changedLanguage('ar')">عربى</div>
+      <div class="language"  *ngIf="language=='ar'" (click) = "changedLanguage('en')">English</div>
+    </ion-buttons> 
+  </ion-toolbar>
+</ion-header>
+<app-menu-header></app-menu-header>
+<ion-content class="ion-padding card-background-page">
+  
+  <!-- <ion-card class="myCard" *ngFor="let ad of ads" routerLink="/ads-details/{{ad.id}}">
+    <img src="assets/images/ads.jpg" class="ads_img"/>
+    <div class="myOverlay">
+       <div class="card-title center">{{ad.title}}</div>
+    </div>
+  </ion-card> -->
+  <div class="margin-top-90">
+  <ion-searchbar (input)="searchByKeyword($event)"></ion-searchbar>
+  <ion-slides pager="true"  #mySlider (ionSlidesDidLoad)="slidesDidLoad(mySlider)" *ngIf="language == 'en'">
+    <ion-slide *ngFor="let ad of ads" routerLink="/ads-details/{{ad.id}}">
+     <ion-card style="width: 100%;">
+      <img class="ads_slider_img" *ngIf="ad.image==null || ad.image==''" src="assets/images/no-image.png">
+      <img class="ads_slider_img" *ngIf="ad.image!=null" src="{{app_url}}{{ad.image}}">
+      <ion-card-content>
+        <div class="card-title semiBold size_16">{{ad.title}}</div>
+    </ion-card-content>
+    </ion-card>
+    </ion-slide>
+  </ion-slides>
+  <ion-slides pager="true"  #mySlider (ionSlidesDidLoad)="slidesDidLoad(mySlider)" dir="rtl" *ngIf="language == 'ar'">
+    <ion-slide *ngFor="let ad of ads" routerLink="/ads-details/{{ad.id}}">
+     <ion-card style="width: 100%;">
+      <img class="ads_slider_img" *ngIf="ad.image==null || ad.image==''" src="assets/images/no-image.png">
+      <img class="ads_slider_img" *ngIf="ad.image!=null" src="{{app_url}}{{ad.image}}">
+      <ion-card-content>
+        <div class="card-title semiBold size_16">{{ad.title}}</div>
+    </ion-card-content>
+    </ion-card>
+    </ion-slide>
+  </ion-slides>
+  <table id="area_table" *ngFor="let ad of ads">
+    <tr >
+      <th>{{'Common.title_label' | translate:param}}</th>
+      <td>{{ad.title}}</td>
+    </tr>
+    <tr>
+      <th>{{'Common.price_label' | translate:param}}</th>
+      <td>{{ad.price}}</td>
+    </tr>
+    <tr>
+      <th>{{'Notice.created_on_label' | translate:param}}</th>
+      <td>{{ad.created_on}}</td>
+    </tr>
+  </table>
+</div>
+</ion-content>

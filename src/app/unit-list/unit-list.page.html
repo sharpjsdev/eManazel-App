@@ -1,0 +1,10 @@
+
+<ion-content>
+  <h3 class="semiBold size_16 center">Switch Unit</h3>
+  <ion-list>
+    <ion-item lines="none" *ngFor="let f of flats;let i = index;" (click)="searchByUnit(f.id)">
+      {{f.number}} - {{f.group_name}}
+    </ion-item>
+  </ion-list>
+</ion-content>
+

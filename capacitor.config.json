@@ -1,0 +1,13 @@
+{
+  "appId": "com.eManazel.app",
+  "appName": "eManazel App",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}
